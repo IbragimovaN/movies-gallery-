@@ -8,6 +8,8 @@ import { ALL_MOVIES, FAVOURITE_MOVIES } from "./constantas/localStorage.js";
 import { createMovieCard } from "./movieCard/createMovieCard.js";
 import { getNewMovieListID } from "./moviesList/getNewMoviesListID.js";
 import { handleListsSwitching } from "./moviesList/handleListsSwitching.js";
+import { handleSaveToFavourites } from "./movieCard/handleSaveToFavourites.js";
+import { handleEmptyMovieList } from "./moviesList/handleEmptyMovieList.js";
 
 setAllMovies();
 
@@ -16,7 +18,6 @@ const btnMoviesListsSwitcher = document.querySelector(
 );
 btnMoviesListsSwitcher.addEventListener("click", (event) => {
   const newMovieListID = getNewMovieListID(event);
-  console.log(newMovieListID);
   handleListsSwitching(event, newMovieListID);
 
   const movieContainer = createMovieContainer(newMovieListID);
@@ -43,6 +44,11 @@ function createMovieContainer(movieListId = FAVOURITE_MOVIES) {
     const movieCard = createMovieCard(movie);
     //attach movie card to container
     movieContainer.insertAdjacentHTML("afterbegin", movieCard);
+  });
+
+  movieContainer.addEventListener("click", (event) => {
+    handleSaveToFavourites(event, movieListId);
+    handleEmptyMovieList(movieContainer);
   });
   return movieContainer;
 }
